@@ -1,0 +1,25 @@
+name: Repo Detective CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@4
+        with:
+          java-version: '25'
+          distribution: temurin
+          cache: maven
+
+      - name: Build and test
+        run: chmod +x mvnw && ./mvnw -B verify

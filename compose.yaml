@@ -1,0 +1,25 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: repo-detective-db
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: repo_detective
+      POSTGRES_USER: repo_user
+      POSTGRES_PASSWORD: local_dev_password
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U repo_user -d repo_detective"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
